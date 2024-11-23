@@ -5,30 +5,31 @@ import java.util.List;
 import java.util.Scanner;
 
 public class Matrix {
-//  n*n array reprezentujici matice, stejny pocet sloupcu jako radku
+    //  n*n array reprezentujici matice, stejny pocet sloupcu jako radku
     double[][] values;
 
     public Matrix(double[][] values) throws IllegalArgumentException {
-        if(values.length != values[0].length){
-//          kdyz pocet sloupcu neni stejny jako pocet radku, hodime error
-            throw new IllegalArgumentException("The number of rows and columns do not match");
-        }else{
-            this.values = values;
+        int height = values.length;
+        for (double[] value : values) {
+            if (value.length != height) {
+//              kdyz pocet sloupcu neni stejny jako pocet radku, hodime error
+                throw new IllegalArgumentException("The number of rows and columns do not match");
+            }
         }
+        this.values = values;
+
     }
 
     public Matrix add(Matrix that) throws IllegalArgumentException {
-        if(that.values.length != that.values[0].length){
-//            teoreticky by tu to byt nemuselo, protoze to chekujeme u tvoreni, ale pro jistotu to tady dam, at se to
-//            kdyztak nepokazi
+        if (this.values.length != that.values.length || this.values[0].length != that.values[0].length) {
             throw new IllegalArgumentException("The number of rows and columns do not match");
         }
-//        result matrix na returnuti
+
         Matrix result = new Matrix(this.values);
 
-        for(int i = 0; i < values.length; i++){
-            for(int j = 0; j < values[i].length; j++){
-//                scitani jednotlivych prvku
+
+        for (int i = 0; i < values.length; i++) {
+            for (int j = 0; j < values[i].length; j++) {
                 result.values[i][j] = values[i][j] + that.values[i][j];
             }
         }
@@ -40,7 +41,7 @@ public class Matrix {
 //        format:
 //        1.0 2.0
 //        3.0 4.0
-        try{
+        try {
 //            inicializace writeru
             FileWriter file = new FileWriter(path);
             BufferedWriter buffer = new BufferedWriter(file);
@@ -53,10 +54,9 @@ public class Matrix {
                 buffer.newLine();
             }
             buffer.close();
-        }
-        catch (IOException e){
+        } catch (IOException e) {
 //            pokud nenalezneme soubor
-             throw new FileNotFoundException(path);
+            throw new FileNotFoundException(path);
         }
     }
 
@@ -84,7 +84,7 @@ public class Matrix {
     public void printMatrix() {
 //        optional funkce na print matice v citelnem formatu
         System.out.print("\n");
-        if (values == null || values.length == 0 || values[0].length == 0)  {
+        if (values == null || values.length == 0 || values[0].length == 0) {
 //            matice je prazdna
             System.out.println("Matrix is empty.");
             return;
@@ -95,60 +95,25 @@ public class Matrix {
         System.out.print("\n");
     }
 
-    public void saveToBinary(String path) throws FileNotFoundException {
-//        funkce pro ukladani matic do binarnich souboru
-        try {
-//            inicializace writeru
-            FileWriter file = new FileWriter(path);
-            BufferedWriter buffer = new BufferedWriter(file);
-
-//            dimenze
-            buffer.append(String.valueOf(values.length)).append(" ");
-            buffer.append(String.valueOf(values[0].length)).append("\n");
-
-//            zapsani dat
-            for (double[] row : values) {
-                for (double v : row) {
-                    buffer.append(String.valueOf(v)).append(" ");
-                }
-                buffer.append("\n"); // Newline after each row
-            }
-            buffer.close();
-        } catch (IOException e) {
-//            soubor neexistuje
-            throw new FileNotFoundException(path);
-        }
-    }
-
     public void loadFromBinary(String path) throws FileNotFoundException {
 //        nacitani matic z binarnich souboru
-        try {
-//            inicializace readeru
-            FileReader file = new FileReader(path);
-            BufferedReader buffer = new BufferedReader(file);
-            Scanner scanner = new Scanner(buffer);
-//            ziskani dimenzi
-            int rows = scanner.nextInt();
-            int cols = scanner.nextInt();
-//            return matice
-            values = new double[rows][cols];
-
-            for (int i = 0; i < rows; i++) {
-                for (int j = 0; j < cols; j++) {
-                    if (scanner.hasNextDouble()) {
-                        values[i][j] = scanner.nextDouble();
-                    }
+        try (FileInputStream fis = new FileInputStream(path);
+             DataInputStream dis = new DataInputStream(fis)) {
+            int width = dis.readInt();
+            int height = dis.readInt();
+            this.values = new double[height][width];
+            for (int i = 0; i < height; i++) {
+                for (int j = 0; j < width; j++) {
+                    this.values[i][j] = dis.readDouble();
                 }
             }
-            scanner.close();
         } catch (IOException e) {
-//            soubor nebyl nalezen
-            throw new FileNotFoundException(path);
+            throw new FileNotFoundException();
         }
     }
 
 
-    public void saveToBinaryStream(String path) throws FileNotFoundException {
+    public void saveToBinary(String path) throws FileNotFoundException {
 //        obdoba save ale za pomoci proudu
         try (FileOutputStream file = new FileOutputStream(path);
 //             inicializace writign streamu
