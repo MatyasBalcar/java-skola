@@ -72,43 +72,76 @@ public class Main {
         }
         return dict;
     }
+// pro ukol c 10
+    public static List<Integer> merge(List<Integer> list1, List<Integer> list2, boolean useLinkedList) {
+        List<Integer> merged;
+        if (useLinkedList){
+            merged = new LinkedList<>();
+        }else{
+            merged = new ArrayList<>();
+        }
 
+        int i = 0, j = 0;
+
+        while (i < list1.size() && j < list2.size()) {
+            if (list1.get(i) <= list2.get(j)) {
+                merged.add(list1.get(i));
+                i++;
+            } else {
+                merged.add(list2.get(j));
+                j++;
+            }
+        }
+
+        while (i < list1.size()) {
+            merged.add(list1.get(i));
+            i++;
+        }
+
+        while (j < list2.size()) {
+            merged.add(list2.get(j));
+            j++;
+        }
+
+        return merged;
+    }
+    // pro ukol c 10
+    public static List<Integer> mergeSort(List<Integer> list, boolean useLinkedList) {
+        if (list.size() <= 1) {
+            return list;
+        }
+
+        int mid = list.size() / 2;
+        List<Integer> left = list.subList(0, mid);
+        List<Integer> right = list.subList(mid, list.size());
+
+        return merge(mergeSort(left, useLinkedList), mergeSort(right, useLinkedList), false);
+    }
     public static void main(String[] args) {
-//        MyPriorityQueue<Prioritizable> queue = new MyPriorityQueue<>(3);
-//
-//        queue.add(new Task("Task 1", Priority.HIGH));
-//        queue.add(new Task("Task 2", Priority.NORMAL));
-//        queue.add(new Task("Task 3", Priority.LOW));
-//        queue.add(new Task("Task 4", Priority.HIGH));
-//
-//        while (!queue.isEmpty()) {
-//            System.out.println(queue.remove());
-//        }
+        List<Integer> linked = new LinkedList<>();
+        List<Integer> array= new ArrayList<>();
 
-        MyList listString = new MyList(3);
-        listString.add("Task 1");
-        listString.add("Task 2");
-        listString.add("Task 1");
-        System.out.printf(locate(listString, "Task 1") + "");
+        Random random = new Random();
 
-        MyList listInteger = new MyList(3);
-        listInteger.add(1);
-        listInteger.add(2);
-        listInteger.add(1);
-        System.out.printf(locate(listString, 2) + "");
+        int LIMIT = 10000;
+        for (int i = 0; i < LIMIT; i++) {
+            int curr = random.nextInt(LIMIT);
+            linked.add(curr);
+            array.add(curr);
+        }
 
-        System.out.printf(selectLowerNumbers(listInteger, 2) + "");
+        long startLinked  = System.currentTimeMillis();
+        linked = mergeSort(linked, true);
+        long endLinked  = System.currentTimeMillis();
 
-        System.out.println(frequencies("abcdefghabc"));
+        long startArray = System.currentTimeMillis();
+        array = mergeSort(array, false);
+        long endArray = System.currentTimeMillis();
 
-        List<Integer> l1 = new ArrayList<>();
-        List<Integer> l2 = new ArrayList<>();
-        l1.add(1);
-        l2.add(2);
-        l1.add(3);
-        l2.add(4);
-        l1.add(5);
-        l2.add(6);
+        System.out.println("Linked time in ms:");
+        System.out.println(endLinked - startLinked); //77
 
+        System.out.println("Array time in ms:");
+        System.out.println(endArray - startArray); //7 asi 10 * rychlejsi kdyz pouzijeme array (da se cekat splitujeme to a berenm i te prvky)
     }
 }
