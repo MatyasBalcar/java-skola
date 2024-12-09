@@ -1,3 +1,5 @@
+import org.jetbrains.annotations.NotNull;
+
 import java.util.*;
 
 public class Main {
@@ -73,6 +75,7 @@ public class Main {
         return dict;
     }
 // pro ukol c 10
+
     public static List<Integer> merge(List<Integer> list1, List<Integer> list2, boolean useLinkedList) {
         List<Integer> merged;
         if (useLinkedList){

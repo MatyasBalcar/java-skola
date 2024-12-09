@@ -9,9 +9,8 @@ public class MyPriorityQueueTest {
         q.add(new Task("Task 2", Priority.LOW));
         q.add(new Task("Task 3", Priority.NORMAL));
 
-        assertEquals(q.remove().getPriority(), Priority.HIGH);
-        assertEquals(q.remove().getPriority(), Priority.NORMAL);
-        assertEquals(q.remove().getPriority(), Priority.LOW);
+        assertEquals(Priority.HIGH, q.remove().getPriority());
+        assertEquals(Priority.NORMAL, q.remove().getPriority());
+        assertEquals(Priority.LOW, q.remove().getPriority());
     }
-
 }
