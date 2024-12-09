@@ -143,7 +143,6 @@ public class Main {
 
         System.out.println("Linked time in ms:");
         System.out.println(endLinked - startLinked); //77
-
         System.out.println("Array time in ms:");
         System.out.println(endArray - startArray); //7 asi 10 * rychlejsi kdyz pouzijeme array (da se cekat splitujeme to a berenm i te prvky)
     }
