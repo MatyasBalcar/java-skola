@@ -16,7 +16,7 @@ public class MyPriorityQueue<T extends Prioritizable> {
             case HIGH -> highQueue.add(item);
             case NORMAL -> normalQueue.add(item);
             case LOW -> lowQueue.add(item);
-            default -> throw new IllegalArgumentException("Neznámá priorita");
+            default -> throw new IllegalArgumentException("Neznama priorita");
         }
     }
 
@@ -28,7 +28,7 @@ public class MyPriorityQueue<T extends Prioritizable> {
         } else if (!lowQueue.isEmpty()) {
             return lowQueue.remove();
         } else {
-            throw new NoSuchElementException("Fronta je prázdná");
+            throw new NoSuchElementException("Fronta je prázdna");
         }
     }
 
