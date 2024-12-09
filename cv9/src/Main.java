@@ -23,7 +23,6 @@ public class Main {
         }
         return result;
     }
-
     //    ukol pro cv 10
     public static List<Object> odd(List<Object> input) {
         List<Object> result = new ArrayList<>();
