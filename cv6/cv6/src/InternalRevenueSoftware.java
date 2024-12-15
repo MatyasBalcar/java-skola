@@ -1,4 +1,6 @@
+import java.util.Collections;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class InternalRevenueSoftware {
     private final List<TaxStatement> statements;
@@ -21,5 +23,14 @@ public class InternalRevenueSoftware {
                 .filter(statement -> statement.year == year)
                 .mapToInt(statement -> statement.taxes)
                 .sum();
+    }
+
+    public List<TaxPayer> topTaxPayers(int n, int year){
+        return statements.stream()
+                .filter(statement ->  statement.year == year)
+                .sorted((a, b) -> Integer.compare(b.taxes, a.taxes))
+                .map(statement -> statement.taxPayer)
+                .limit(n)
+                .collect(Collectors.toList());
     }
 }

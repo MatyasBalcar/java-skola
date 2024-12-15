@@ -7,6 +7,7 @@ public class Person extends TaxPayer{
     }
     PersonType type;
     public Person(String name, int childrenCount, PersonType type) {
+        super(name);
         this.name = name;
         this.childrenCount = childrenCount;
         this.type = type;
