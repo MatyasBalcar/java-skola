@@ -1,3 +1,4 @@
+import javax.swing.*;
 import java.util.NoSuchElementException;
 
 public class MyPriorityQueue<T extends Prioritizable> {
@@ -9,6 +10,17 @@ public class MyPriorityQueue<T extends Prioritizable> {
         highQueue = new MyQueue<>(capacityPerPriority);
         normalQueue = new MyQueue<>(capacityPerPriority);
         lowQueue = new MyQueue<>(capacityPerPriority);
+    }
+
+    public interface Action<T> {
+        public void perform(T value);
+    }
+
+    public void forEach(Action<T> action) {
+        while(!this.isEmpty()){
+            T item = this.remove();
+            action.perform(item);
+        }
     }
 
     public void add(T item) {

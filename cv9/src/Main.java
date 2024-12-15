@@ -1,4 +1,5 @@
 import java.util.*;
+import java.util.function.Predicate;
 
 public class Main {
     public static <T> MyList locate(MyList list, T item) {
@@ -117,30 +118,24 @@ public class Main {
 
         return merge(mergeSort(left, useLinkedList), mergeSort(right, useLinkedList), false);
     }
-    public static void main(String[] args) {
-        List<Integer> linked = new LinkedList<>();
-        List<Integer> array= new ArrayList<>();
 
-        Random random = new Random();
-
-        int LIMIT = 10000;
-        for (int i = 0; i < LIMIT; i++) {
-            int curr = random.nextInt(LIMIT);
-            linked.add(curr);
-            array.add(curr);
+    //* Ukoly pro cv 11
+    public static <T> boolean anyMatch(Collection<T> collection, Predicate<T> condition) {
+        if (collection == null || condition == null) {
+            throw new IllegalArgumentException("Kolekce nebo podminka nesmi byt null");
         }
 
-        long startLinked  = System.currentTimeMillis();
-        linked = mergeSort(linked, true);
-        long endLinked  = System.currentTimeMillis();
+        for (T item : collection) {
+            if (condition.test(item)) {
+                return true;
+            }
+        }
+        return false;
+    }
 
-        long startArray = System.currentTimeMillis();
-        array = mergeSort(array, false);
-        long endArray = System.currentTimeMillis();
 
-        System.out.println("Linked time in ms:");
-        System.out.println(endLinked - startLinked); //77
-        System.out.println("Array time in ms:");
-        System.out.println(endArray - startArray); //7 asi 10 * rychlejsi kdyz pouzijeme array (da se cekat splitujeme to a berenm i te prvky)
+
+    public static void main(String[] args) {
+
     }
 }
