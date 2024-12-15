@@ -8,6 +8,7 @@ public class Corporation extends TaxPayer{
     CorpType type;
 
     public Corporation(String name, CorpType type) {
+        super(name);
         this.name = name;
         this.type = type;
     }
