@@ -13,4 +13,5 @@ public class MyPriorityQueueTest {
         assertEquals(Priority.NORMAL, q.remove().getPriority());
         assertEquals(Priority.LOW, q.remove().getPriority());
     }
+
 }

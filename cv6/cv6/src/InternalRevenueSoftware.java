@@ -31,6 +31,6 @@ public class InternalRevenueSoftware {
                 .sorted((a, b) -> Integer.compare(b.taxes, a.taxes))
                 .map(statement -> statement.taxPayer)
                 .limit(n)
-                .collect(Collectors.toList());
+                .toList();
     }
 }
