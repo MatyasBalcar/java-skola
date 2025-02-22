@@ -68,7 +68,6 @@ public class Main {
             }catch (NullPointerException e) {
                 dict.put(s.substring(i, i + 1), 1);
             }
-
         }
         return dict;
     }
