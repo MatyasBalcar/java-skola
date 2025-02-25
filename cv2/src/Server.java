@@ -125,7 +125,6 @@ public class Server {
 
             clientWriters.remove(userName);
 
-
             try {
                 if (rd != null) rd.close();
                 if (wr != null) wr.close();

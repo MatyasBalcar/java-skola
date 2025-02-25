@@ -44,11 +44,5 @@ public class Main {
 
         //nesmysl
         client1.sendMessage("paradigmataprogramovani");
-
-
-
-
-
     }
-
 }
