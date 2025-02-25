@@ -1,10 +1,8 @@
 import java.io.*;
 import java.net.ServerSocket;
 import java.net.Socket;
-import java.util.Hashtable;
-import java.util.Iterator;
-import java.util.Map;
-import java.util.Objects;
+import java.util.*;
+import java.util.stream.Collectors;
 
 public class Server {
     public String name;
@@ -22,16 +20,13 @@ public class Server {
     private void processRequests(Socket clientSocket, BufferedReader rd, BufferedWriter wr) throws IOException {
         while (true) {
             String line = rd.readLine();
-            if (line == null || line.equalsIgnoreCase("quit")) break; // Exit if "quit" or null
+            if (line == null || line.equalsIgnoreCase("quit")) break;
 
             String resp;
             String[] sp_line = line.split("\\s+");
             String keyword = sp_line[0];
 
             switch (keyword) {
-                case "rizz":
-                    resp = "gyat";
-                    break;
                 case "signup":
                     resp = this.signUpUser(sp_line[1], sp_line[2]);
                     break;
@@ -39,11 +34,13 @@ public class Server {
                     resp = this.logInUser(sp_line[1], sp_line[2], wr);
                     break;
                 case "msg":
-                    resp = this.sendMessage(sp_line[2], sp_line[3]);
+                    String message = Arrays.stream(sp_line).skip(3).collect(Collectors.joining(" "));
+                    resp = this.sendMessage(sp_line[2], message);
                     break;
                 case "read":
                     resp = this.readMessages();
                     break;
+
                 case "logout":
                     resp = this.logOut(this.signedInUserName, clientSocket, rd, wr);
                     return;
@@ -67,7 +64,7 @@ public class Server {
 
     public String signUpUser(String userName, String password) {
         if (checkIfUserInDb(userName) == 1) {
-            return "Status: 402 User already in db";
+            return "User already in db";
         } else {
             userDb.put(userName, password);
             return "Status 200: User added to database";
@@ -126,9 +123,9 @@ public class Server {
                 }
             }
 
-            clientWriters.remove(userName); // Remove client from active connections
+            clientWriters.remove(userName);
 
-            // Close the connection
+
             try {
                 if (rd != null) rd.close();
                 if (wr != null) wr.close();
