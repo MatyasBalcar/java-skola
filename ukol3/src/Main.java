@@ -5,7 +5,6 @@ public class Main {
         Server server = new Server("server");
         String default_ip = "127.0.0.1";
 
-        // Start the server in a new thread
         new Thread(() -> {
             try {
                 server.startServer();

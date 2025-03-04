@@ -127,10 +127,8 @@ public class Server {
 
         int[] array;
         if (testMode == 1) {
-            // Create a sorted array and reverse it
             array = IntStream.range(0, size).map(i -> size - i - 1).toArray();
         } else {
-            // Generate a random array
             array = new Random().ints(size, 0, 10000).toArray();
         }
 
