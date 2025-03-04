@@ -79,7 +79,7 @@ public class Server {
     }
 
     public String logInUser(String userName, String password, BufferedWriter wr) {
-        if (signedInUserName.equals("") && userDb.getOrDefault(userName, "").equals(password)) {
+        if (signedInUserName.isEmpty() && userDb.getOrDefault(userName, "").equals(password)) {
             signedInUserName = userName;
             clientWriters.put(userName, wr);
             return "User logged in";
