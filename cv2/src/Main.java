@@ -28,7 +28,7 @@ public class Main {
         client0.sendMessage("login cl0 password");
 
         //sending message to cl1
-        client0.sendMessage("msg for cl1 jaksemas");//todo at muzes posilat zpravy  s vice slovy
+        client0.sendMessage("msg for cl1 jak se mas");
 
         //logging out cl0
         client0.sendMessage("logout");
@@ -42,7 +42,7 @@ public class Main {
         //logging out cl1
         client1.sendMessage("logout");
 
-
+        //nesmysl
+        client1.sendMessage("paradigmataprogramovani");
     }
-
 }
