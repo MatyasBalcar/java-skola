@@ -11,9 +11,9 @@ import java.util.stream.IntStream;
 
 public class Server {
     public String name;
-    private Hashtable<String, String> userDb = new Hashtable<>();
-    private Hashtable<String, String> messages = new Hashtable<>();
-    private Hashtable<String, BufferedWriter> clientWriters = new Hashtable<>();
+    private final Hashtable<String, String> userDb = new Hashtable<>();
+    private final Hashtable<String, String> messages = new Hashtable<>();
+    private final Hashtable<String, BufferedWriter> clientWriters = new Hashtable<>();
     private String signedInUserName = "";
 
     public Server(String name) {
