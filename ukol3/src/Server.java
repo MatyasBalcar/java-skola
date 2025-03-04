@@ -98,7 +98,7 @@ public class Server {
     }
 
     public String readMessages() {
-        if (!signedInUserName.equals("")) {
+        if (!signedInUserName.isEmpty()) {
             String message = messages.getOrDefault(signedInUserName, "No messages");
             messages.remove(signedInUserName);
             return "Messages: " + message;
@@ -108,7 +108,7 @@ public class Server {
     }
 
     public String logOut(String userName, Socket clientSocket, BufferedReader rd, BufferedWriter wr) {
-        if (!signedInUserName.equals("")) {
+        if (!signedInUserName.isEmpty()) {
             signedInUserName = "";
             clientWriters.remove(userName);
             try {
