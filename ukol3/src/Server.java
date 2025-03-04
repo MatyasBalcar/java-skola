@@ -89,7 +89,7 @@ public class Server {
     }
 
     public String sendMessage(String user, String message) {
-        if (!signedInUserName.equals("")) {
+        if (!signedInUserName.isEmpty()) {
             messages.put(user, message);
             return "Message sent";
         } else {
