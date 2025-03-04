@@ -132,6 +132,9 @@ public class Server {
             array = new Random().ints(size, 0, 10000).toArray();
         }
 
+        //tady by mohl byt nejaky cyklus ci neco na Threads.Buidler a Threads.ofVirtual
+        //ale nasel jsem tohle snad to muzu pouzit
+
         ExecutorService executor = Executors.newFixedThreadPool(threads);
 
         long startTime = System.currentTimeMillis();
