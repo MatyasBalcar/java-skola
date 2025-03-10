@@ -13,37 +13,22 @@ public class Main {
             }
         }).start();
 
-
-
-
-        // Sorting Tests
         System.out.println("\n=== Sorting Tests ===");
 
         Client client2 = new Client(default_ip);
 
-        client2.sendMessage("sort 1000 1000 1");
-        client2.sendMessage("sort 1000 1000 1");
-        client2.sendMessage("sort 1000 1000 1");
-        client2.sendMessage("sort 1000 1000 1");
-        client2.sendMessage("sort 1000 1000 1");
-        client2.sendMessage("sort 1000 1000 1");
+        client2.sendMessage("sort 1000 400 1");
 
+        client2.sendMessage("sort 1000 500 1");
 
-
-//        // Invalid cases
-//        client2.sendMessage("sort 0 4");  // Invalid size
-//        client2.sendMessage("sort -100 4"); // Negative size
-//        client2.sendMessage("sort 100 -2"); // Negative thread count
-//        client2.sendMessage("sort 100 abc"); // Invalid thread count
-//        client2.sendMessage("sort abc 5"); // Invalid size
+        client2.sendMessage("sort 1000 750 1");
 
         client2.sendMessage("quit");
 
-
-        System.out.println("\nStopping server...");
-        Client client3 = new Client(default_ip);
-        client3.sendMessage("stopserver");
-        client3.sendMessage("quit");
-        client3.closeConnection();
+        System.out.println("\nServer usina...");
+        client2.sendMessage("stopserver");
+        client2.sendMessage("quit");
+        client2.closeConnection();
+        System.out.println("\nServer spinka...");
     }
 }

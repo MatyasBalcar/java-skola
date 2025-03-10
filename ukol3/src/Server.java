@@ -1,15 +1,19 @@
 import java.io.*;
 import java.net.ServerSocket;
 import java.net.Socket;
-import java.util.*;
-import java.util.concurrent.*;
+import java.util.Arrays;
+import java.util.Hashtable;
+import java.util.Random;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.Future;
 import java.util.stream.IntStream;
 
 public class Server {
     public String name;
-    private Hashtable<String, String> userDb = new Hashtable<>();
-    private Hashtable<String, String> messages = new Hashtable<>();
-    private Hashtable<String, BufferedWriter> clientWriters = new Hashtable<>();
+    private final Hashtable<String, String> userDb = new Hashtable<>();
+    private final Hashtable<String, String> messages = new Hashtable<>();
+    private final Hashtable<String, BufferedWriter> clientWriters = new Hashtable<>();
     private String signedInUserName = "";
 
     public Server(String name) {
@@ -75,7 +79,7 @@ public class Server {
     }
 
     public String logInUser(String userName, String password, BufferedWriter wr) {
-        if (signedInUserName.equals("") && userDb.getOrDefault(userName, "").equals(password)) {
+        if (signedInUserName.isEmpty() && userDb.getOrDefault(userName, "").equals(password)) {
             signedInUserName = userName;
             clientWriters.put(userName, wr);
             return "User logged in";
@@ -85,7 +89,7 @@ public class Server {
     }
 
     public String sendMessage(String user, String message) {
-        if (!signedInUserName.equals("")) {
+        if (!signedInUserName.isEmpty()) {
             messages.put(user, message);
             return "Message sent";
         } else {
@@ -94,7 +98,7 @@ public class Server {
     }
 
     public String readMessages() {
-        if (!signedInUserName.equals("")) {
+        if (!signedInUserName.isEmpty()) {
             String message = messages.getOrDefault(signedInUserName, "No messages");
             messages.remove(signedInUserName);
             return "Messages: " + message;
@@ -104,7 +108,7 @@ public class Server {
     }
 
     public String logOut(String userName, Socket clientSocket, BufferedReader rd, BufferedWriter wr) {
-        if (!signedInUserName.equals("")) {
+        if (!signedInUserName.isEmpty()) {
             signedInUserName = "";
             clientWriters.remove(userName);
             try {
@@ -131,6 +135,9 @@ public class Server {
         } else {
             array = new Random().ints(size, 0, 10000).toArray();
         }
+
+        //tady by mohl byt nejaky cyklus ci neco na Threads.Buidler a Threads.ofVirtual
+        //ale nasel jsem tohle snad to muzu pouzit
 
         ExecutorService executor = Executors.newFixedThreadPool(threads);
 

@@ -7,7 +7,7 @@ public class Client {
     private BufferedReader rd;
     private BufferedWriter wr;
 
-    public Client(String host) throws IOException {
+    public Client(String host) {
         try {
             this.socket = new Socket(host, 4242);
             this.rd = new BufferedReader(new InputStreamReader(socket.getInputStream()));
