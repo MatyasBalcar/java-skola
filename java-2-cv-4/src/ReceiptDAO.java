@@ -87,4 +87,73 @@ public class ReceiptDAO {
         return null;
     }
 
+    public void updateReceipt(Receipt receipt) {
+        String updateReceipt = "UPDATE receipt SET name = ?, itin = ?, total = ? WHERE id = ?";
+        String deleteItems = "DELETE FROM item WHERE receipt_id = ?";
+        String insertItem = "INSERT INTO item (receipt_id, description, amount, unit_price) VALUES (?, ?, ?, ?)";
+
+        try (Connection conn = DB.connect()) {
+            conn.setAutoCommit(false);
+
+            try (PreparedStatement psUpdateReceipt = conn.prepareStatement(updateReceipt);
+                 PreparedStatement psDeleteItems = conn.prepareStatement(deleteItems);
+                 PreparedStatement psInsertItem = conn.prepareStatement(insertItem)) {
+
+                psUpdateReceipt.setString(1, receipt.getName());
+                psUpdateReceipt.setString(2, receipt.getItin());
+                psUpdateReceipt.setInt(3, receipt.getTotal());
+                psUpdateReceipt.setInt(4, receipt.getId());
+                psUpdateReceipt.executeUpdate();
+
+                psDeleteItems.setInt(1, receipt.getId());
+                psDeleteItems.executeUpdate();
+
+                for (Item item : receipt.getItems()) {
+                    psInsertItem.setInt(1, receipt.getId());
+                    psInsertItem.setString(2, item.getDescription());
+                    psInsertItem.setInt(3, item.getAmount());
+                    psInsertItem.setInt(4, item.getUnitPrice());
+                    psInsertItem.addBatch();
+                }
+                psInsertItem.executeBatch();
+
+                conn.commit();
+
+            } catch (SQLException e) {
+                conn.rollback();
+                throw e;
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+    public void deleteReceipt(int id) {
+        String deleteItems = "DELETE FROM item WHERE receipt_id = ?";
+        String deleteReceipt = "DELETE FROM receipt WHERE id = ?";
+
+        try (Connection conn = DB.connect()) {
+            conn.setAutoCommit(false);
+
+            try (PreparedStatement psDeleteItems = conn.prepareStatement(deleteItems);
+                 PreparedStatement psDeleteReceipt = conn.prepareStatement(deleteReceipt)) {
+
+                psDeleteItems.setInt(1, id);
+                psDeleteItems.executeUpdate();
+
+                psDeleteReceipt.setInt(1, id);
+                psDeleteReceipt.executeUpdate();
+
+                conn.commit();
+
+            } catch (SQLException e) {
+                conn.rollback();
+                throw e;
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
 }
