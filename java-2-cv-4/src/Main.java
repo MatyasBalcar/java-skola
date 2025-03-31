@@ -42,5 +42,7 @@ public class Main {
         for (Item item : loaded.getItems()) {
             System.out.println(" - " + item.getDescription() + ": " + item.getAmount() + " × " + item.getUnitPrice());
         }
+
+        dao.deleteReceipt(loaded.getId());
     }
 }
