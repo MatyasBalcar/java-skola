@@ -17,11 +17,10 @@ public class Main {
 
         Client client2 = new Client(default_ip);
 
-        client2.sendMessage("sort 1000 400 1");
 
-        client2.sendMessage("sort 1000 500 1");
-
-        client2.sendMessage("sort 1000 750 1");
+        client2.sendMessage("sort 1000 1000 ");
+        client2.sendMessage("sort 3000 1000 ");
+//        client2.sendMessage("sort 100000 100000 ");
 
         client2.sendMessage("quit");
 

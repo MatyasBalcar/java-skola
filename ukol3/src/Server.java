@@ -21,11 +21,12 @@ public class Server {
     }
 
     private void processRequests(Socket clientSocket, BufferedReader rd, BufferedWriter wr) throws IOException {
-        while (true) {
+        boolean isRunning = true;
+        while (isRunning) {
             String line = rd.readLine();
             if (line == null || line.equalsIgnoreCase("quit")) break;
 
-            String resp;
+            String resp = "";
             String[] sp_line = line.split("\\s+");
             String keyword = sp_line[0];
 
@@ -55,6 +56,9 @@ public class Server {
                     } else {
                         resp = "ERR Invalid sort request format. Use: sort <size> <threads>";
                     }
+                    break;
+                case "stopserver":
+                    isRunning = false;
                     break;
                 case "logout":
                     resp = this.logOut(this.signedInUserName, clientSocket, rd, wr);
@@ -133,7 +137,7 @@ public class Server {
         if (testMode == 1) {
             array = IntStream.range(0, size).map(i -> size - i - 1).toArray();
         } else {
-            array = new Random().ints(size, 0, 10000).toArray();
+            array = new Random().ints(size, 0, Math.min(size, 1000)).toArray();
         }
 
         //tady by mohl byt nejaky cyklus ci neco na Threads.Buidler a Threads.ofVirtual
@@ -152,6 +156,7 @@ public class Server {
 
     private void parallelMergeSort(int[] array, ExecutorService executor) {
         parallelMergeSortHelper(array, 0, array.length - 1, executor);
+//        System.out.println(Arrays.toString(array));
     }
 
     private void parallelMergeSortHelper(int[] array, int left, int right, ExecutorService executor) {
@@ -169,10 +174,12 @@ public class Server {
             }
 
             merge(array, left, mid, right);
+
         }
     }
 
     private void merge(int[] array, int left, int mid, int right) {
+//        System.out.println("sorting"+ left);
         int n1 = mid - left + 1;
         int n2 = right - mid;
 
